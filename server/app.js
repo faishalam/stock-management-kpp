@@ -13,7 +13,9 @@ app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 app.use(router);
 
-const port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`[LOG] App listening on port ${port}`);
-});
+// const port = process.env.PORT || 3000;
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(`[LOG] App listening on port ${port}`);
+// });
+
+module.exports = app;
