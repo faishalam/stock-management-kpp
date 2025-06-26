@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const baseURL = "http://18.142.184.223/";
+const baseURL = "https://stock-management.cloud/";
 
 export const HeroServices = Axios.create({
   baseURL: baseURL,
