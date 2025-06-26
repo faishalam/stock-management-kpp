@@ -4,13 +4,23 @@ import MobileSidebar from "@/components/molecules/mobileSidebar";
 import Navbar from "@/components/molecules/navbar";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { AuthProvider } from "../hooks";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useRouter } from "next/navigation";
 const theme = createTheme();
 
 type TProps = {
   children?: React.ReactNode;
 };
 const PrivateLayout: React.FC<TProps> = ({ children }) => {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      router.push("/dashboard");
+    } else {
+      router.push("/login");
+    }
+  }, [router]);
   return (
     <AuthProvider>
       <div className="w-full max-w-full min-h-screen bg-gray-100 overflow-hidden">
