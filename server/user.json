@@ -1,0 +1,30 @@
+[
+     {
+        "username": "admin",
+        "password": "P@ssw0rdadmin",
+        "email": "admin@gmail.com",
+        "role": "admin",
+        "areaKerja": "All"
+    },
+    {
+        "username": "user",
+        "password": "P@ssw0rduser",
+        "email": "user@gmail.com",
+        "role": "user",
+        "areaKerja": "Onion 1"
+    },
+    {
+        "username": "supervisor_1",
+        "password": "P@ssw0rdsupervisor",
+        "email": "supervisor1@gmail.com",
+        "role": "supervisor_1",
+        "areaKerja": "All"
+    },
+    {
+        "username": "supervisor_2",
+        "password": "P@ssw0rdsupervisor",
+        "email": "supervisor2@gmail.com",
+        "role": "supervisor_2",
+        "areaKerja": "All"
+    }
+]
