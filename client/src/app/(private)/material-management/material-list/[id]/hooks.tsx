@@ -4,6 +4,8 @@ import { createContext, useContext, useMemo, useState } from "react";
 import { ValueGetterParams } from "@ag-grid-community/core";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import useMaterialListById from "@/service/material/useMaterialById";
 import { TMasterMaterialCol, TMaterialFormInput } from "../types";
 import RenderTransactionStatus from "@/components/atoms/render-transaction-status";
@@ -227,8 +229,35 @@ const useMaterialListDetail = () => {
     return isLoadingMaterialListById || isLoadingStockByMaterialId;
   }
 
+  const onDownloadData = (dataStockByMaterialId: TMasterMaterialStockList[]) => {
+     try {
+      const d = dataStockByMaterialId?.map((material: TMasterMaterialStockList) => {
+        return {
+          "Material Name": dataMaterialById.materialName,
+          Quantity: dataMaterialById.quantity,
+          "Harga per Satuan": material.hargaSatuan,
+          "Total Harga": material.hargaTotal,
+          "Submitted By": material.User.username,
+          "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
+          Status: material.status,
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(d);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `material-list-all.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     statisticsDataTop,
+    onDownloadData,
     filter,
     stockListColumnDef,
     dataGrid,

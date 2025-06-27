@@ -1,5 +1,7 @@
 "use client";
 import moment from "moment";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import IconPencil from "@/assets/svg/icon-pencil.svg";
 import DeleteIcon from "@/assets/svg/delete-icon.svg";
 import IconEye from "@/assets/svg/eye-icon.svg";
@@ -197,7 +199,7 @@ const useMaterialListHooks = () => {
           if (data?.quantity > findMaterial.limited)
             return toast.error(
               `Request hanya dapat ${findMaterial.limited} ${findMaterial.satuan}`
-            ) ;
+            );
           mutateAddRequest({
             materialId: selectedId,
             quantity: data?.quantity,
@@ -462,8 +464,35 @@ const useMaterialListHooks = () => {
     [dataMaterialList]
   );
 
+  const onDownloadData = (dataMaterialList: TMasterMaterialList[]) => {
+    try {
+      const d = dataMaterialList?.map((material: TMasterMaterialList) => {
+        return {
+          "No. Material": material.materialNumber,
+          "Material Name": material.materialName,
+          "Satuan": material.satuan,
+          "Available Stock": material.totalStock,
+          "Limited Request": material.limited,
+          "Submitted By": material.User?.username,
+          "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(d);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `raw-material.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     filter,
+    onDownloadData,
     statisticsDataTop,
     isLoadingMaterialList,
     isLoadingMaterialListById,

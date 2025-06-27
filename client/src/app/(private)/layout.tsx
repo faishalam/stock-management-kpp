@@ -15,12 +15,11 @@ const PrivateLayout: React.FC<TProps> = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
-    if (token) {
-      router.push("/dashboard");
-    } else {
+    if (!token) {
       router.push("/login");
     }
   }, [router]);
+
   return (
     <AuthProvider>
       <div className="w-full max-w-full min-h-screen bg-gray-100 overflow-hidden">

@@ -1,5 +1,7 @@
 "use client";
 import moment from "moment";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import IconEye from "@/assets/svg/eye-icon.svg";
 import { createContext, useContext, useMemo, useState } from "react";
 import { ValueGetterParams } from "@ag-grid-community/core";
@@ -279,6 +281,34 @@ const useStockMaterialHooks = () => {
     return isLoadingMaterialStock || isLoadingMaterialList;
   }
 
+  const onDownloadData = (dataMaterialStock: TMasterMaterialStockList[]) => {
+    try {
+      const d = dataMaterialStock?.map((material: TMasterMaterialStockList) => {
+        return {
+          "No. Material": material.Material.materialNumber,
+          "Material Name": material.Material.materialName,
+          Quantity: material.quantity,
+          Satuan: material.Material.satuan,
+          "Harga per Satuan": material.hargaSatuan,
+          "Total Harga": material.hargaTotal,
+          "Submitted By": material.User.username,
+          "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
+          Status: material.status,
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(d);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `available-completed-stock.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     useGlobalLoading,
     statisticsDataTop,
@@ -301,6 +331,7 @@ const useStockMaterialHooks = () => {
     filter,
     setFilter,
     dataGrid,
+    onDownloadData,
     openModalHarga,
     setOpenModalHarga,
   };

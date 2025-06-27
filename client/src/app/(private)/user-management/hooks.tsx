@@ -1,6 +1,7 @@
 "use client";
 import IconPencil from "@/assets/svg/icon-pencil.svg";
 import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import DeleteIcon from "@/assets/svg/delete-icon.svg";
 import IconEye from "@/assets/svg/eye-icon.svg";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -339,19 +340,17 @@ const useUserManagementHooks = () => {
           "User Name": user?.username,
           Email: user?.email,
           Role: user?.role,
-          District: user?.district,
-          Department: user?.department,
-          Site: user?.site,
+          "Area Kerja": user?.areaKerja,
         };
       });
       const ws = XLSX.utils.json_to_sheet(d);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Data");
-      // const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-      // const data = new Blob([excelBuffer], {
-      //   type: "application/octet-stream",
-      // });
-      //   saveAs(data, `user-management.xlsx`);
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `user-management.xlsx`);
     } catch (error) {
       console.log(error);
     }
@@ -371,6 +370,7 @@ const useUserManagementHooks = () => {
   }, [mode, dataUserById]);
 
   return {
+    onDownloadData,
     isLoadingAddUser,
     isLoadingDeleteUser,
     isLoadingEditUser,
@@ -387,7 +387,6 @@ const useUserManagementHooks = () => {
     errorsRegister,
     resetRegister,
     pagination,
-    onDownloadData,
     setPagination,
     getValuesRegister,
     controlRegister,

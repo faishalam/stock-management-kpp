@@ -1,6 +1,8 @@
 "use client";
 import { createContext, useContext, useMemo, useState } from "react";
 import useAuth from "@/app/hooks";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import useMaterialListAPI from "@/service/material/useMaterialList";
 import { useForm } from "react-hook-form";
 import useRequestMaterialList from "@/service/request/useRequestList";
@@ -232,8 +234,35 @@ const useRequestMaterialCompletedHooks = () => {
     { value: "Carpenter", label: "Carpenter" },
     { value: "All", label: "All" },
   ];
+
+   const onDownloadData = (dataRequestMaterial: TRequestMaterialList[]) => {
+      try {
+        const d = dataRequestMaterial?.map((material: TRequestMaterialList) => {
+          return {
+            "No. Material": material.Material.materialNumber,
+            "Material Name": material.Material.materialName,
+            "Request Stock" : material.quantity,
+            "Satuan" : material.Material.satuan,
+            "Request By" : material.User.username,
+            "User Area Kerja" : material.User.areaKerja,
+            "Status" : material.status
+          };
+        });
+        const ws = XLSX.utils.json_to_sheet(d);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Data");
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], {
+          type: "application/octet-stream",
+        });
+        saveAs(data, `completed-material.xlsx`);
+      } catch (error) {
+        console.log(error);
+      }
+    };
   return {
     openModalQuantity,
+    onDownloadData,
     areaKerjaOptions,
     setOpenModalQuantity,
     statisticsDataTop,

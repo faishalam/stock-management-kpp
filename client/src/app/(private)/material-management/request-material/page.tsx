@@ -20,6 +20,7 @@ const RequestMaterialPage: React.FC = () => {
     statisticsDataTop,
     dataMaterialList,
     areaKerjaOptions,
+    onDownloadData,
   } = useRequestMaterial();
   const globalLoading = useGlobalLoading();
   return (
@@ -50,6 +51,7 @@ const RequestMaterialPage: React.FC = () => {
                   <ButtonSubmit
                     btnIcon={<DownloadIcon className="" />}
                     classname="flex gap-2 text-[10px] bg-[#2976d2] transition-all cursor-pointer hover:bg-[#2956d2] rounded-[8px] px-2 text-white"
+                    onClick={() => onDownloadData(dataGrid)}
                   />
                   <CInput
                     value={filter.search}

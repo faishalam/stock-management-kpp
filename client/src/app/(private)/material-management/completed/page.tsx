@@ -17,6 +17,7 @@ const RequestMaterialPage: React.FC = () => {
     statisticsDataTop,
     dataMaterialList,
     areaKerjaOptions,
+    onDownloadData
   } = useRequestMaterialCompleted();
   const globalLoading = useGlobalLoading();
   return (
@@ -43,6 +44,7 @@ const RequestMaterialPage: React.FC = () => {
                 <div className="flex max-w-full w-full gap-2">
                   <ButtonSubmit
                     btnIcon={<DownloadIcon className="" />}
+                    onClick={() => onDownloadData(dataGrid)}
                     classname="flex gap-2 text-[10px] bg-[#2976d2] transition-all cursor-pointer hover:bg-[#2956d2] rounded-[8px] px-2 text-white"
                   />
                   <CInput

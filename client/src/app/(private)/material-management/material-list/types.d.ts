@@ -7,6 +7,7 @@ export type TMasterMaterialList = {
   materialName: string;
   satuan: string;
   totalStock: number;
+  limited: number;
   User: {
     username: string;
     email: string;

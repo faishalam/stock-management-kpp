@@ -1,5 +1,7 @@
 "use client";
 import IconPencil from "@/assets/svg/icon-pencil.svg";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import DeleteIcon from "@/assets/svg/delete-icon.svg";
 import IconEye from "@/assets/svg/eye-icon.svg";
 import { createContext, useContext, useMemo, useState } from "react";
@@ -446,7 +448,33 @@ const useRequestMaterialHooks = () => {
     { value: "All", label: "All" },
   ];
 
+  const onDownloadData = (dataRequestMaterial: TRequestMaterialList[]) => {
+    try {
+      const d = dataRequestMaterial?.map((material: TRequestMaterialList) => {
+        return {
+          "No. Material": material.Material.materialNumber,
+          "Material Name": material.Material.materialName,
+          "Request Stock": material.quantity,
+          Satuan: material.Material.satuan,
+          "Request By": material.User.username,
+          "User Area Kerja": material.User.areaKerja,
+          Status: material.status,
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(d);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `approval-request-material.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
+    onDownloadData,
     openModalQuantity,
     areaKerjaOptions,
     onInvalidSubmitQuantity,
