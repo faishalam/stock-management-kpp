@@ -28,7 +28,7 @@ class StockController {
         ],
       });
 
-      sendEmail("catheringsupervisorsatu@gmail.com", stock);
+      sendEmail("ferosbintangmorowali@gmail.com", stock);
       res.status(200).json(newStock);
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
@@ -248,7 +248,7 @@ class StockController {
             },
           ],
         });
-        sendEmail("digisuite17@gmail.com", findStock);
+        sendEmail("rizal.galang@kppmining.com", findStock);
         return res.status(200).json({ message: "Stock approved successfully" });
       }
 
