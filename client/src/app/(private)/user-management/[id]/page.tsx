@@ -134,7 +134,7 @@ export default function UserManagementAddPage() {
                       getOptionLabel={(option) => option.label ?? ""}
                       placeholder="Select user area kerja"
                       value={
-                        rolesOptions.find((opt) => opt.value === field.value) ||
+                        areaKerjaOptions.find((opt) => opt.value === field.value) ||
                         null
                       }
                       onChange={(_, newValue) => {
