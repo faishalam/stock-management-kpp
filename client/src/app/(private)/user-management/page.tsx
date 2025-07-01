@@ -19,7 +19,7 @@ export default function UserManagementPage() {
     filter,
     dataGrid,
     areaKerjaOptions,
-    onDownloadData
+    onDownloadData,
   } = useUserManagement();
   const { dataUser } = useAuth();
   const router = useRouter();
@@ -97,7 +97,7 @@ export default function UserManagementPage() {
                       placeholder="Area Kerja User"
                     />
                     {dataUser?.role === "admin" && (
-                      <div className="w-[20%] flex">
+                      <div className="w-[50%] flex">
                         <ButtonSubmit
                           classname="flex w-full justify-center items-center cursor-pointer text-sm gap-2 text-white !bg-[#154940] hover:!bg-[#0e342d] !rounded-[8px]"
                           btnText="Add User"
