@@ -134,7 +134,7 @@ class RequestMaterialController {
 
 
         if (findMaterial.totalStock <= reminderStock) {
-          sendEmailReminderAdmin("digisuite17@gmail.com", findMaterial);
+          sendEmailReminderAdmin("andriii150221@gmail.com", findMaterial);
         }
 
         res.status(200).json({ message: "Request updated successfully" });
