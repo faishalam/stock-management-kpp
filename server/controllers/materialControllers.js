@@ -32,10 +32,10 @@ class MaterialController {
 
   static async getAllMaterial(req, res) {
     try {
-      const { page = 1, limit = 10 } = req.query;
+      const { page = 1 } = req.query;
 
       const pageNum = parseInt(page, 10);
-      const limitNum = parseInt(limit, 10);
+      const limitNum = parseInt(10);
       const offset = (pageNum - 1) * limitNum;
 
       const { count, rows } = await Material.findAndCountAll({
@@ -46,7 +46,6 @@ class MaterialController {
           },
         ],
         order: [["createdAt", "DESC"]],
-        limit: limitNum,
         offset,
       });
 
@@ -113,7 +112,10 @@ class MaterialController {
         return res.status(401).json({ message: "You are not authorized" });
       }
 
-      await Material.update({ materialName, satuan, limited }, { where: { id } });
+      await Material.update(
+        { materialName, satuan, limited },
+        { where: { id } }
+      );
 
       res.status(200).json({ message: "Material updated successfully" });
     } catch (error) {
