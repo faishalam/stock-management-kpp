@@ -302,7 +302,6 @@ const useMaterialListHooks = () => {
       },
       {
         field: "materialName",
-        flex: 1,
         headerName: "Nama Meterial",
         width: 300,
       },
