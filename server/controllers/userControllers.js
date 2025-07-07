@@ -185,6 +185,7 @@ class UserController {
         },
       });
     } catch (error) {
+      console.log(error, '<<')
       if (error.name === "SequelizeValidationError") {
         return res.status(400).json({ message: error.errors[0].message });
       }

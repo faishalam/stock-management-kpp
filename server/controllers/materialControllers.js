@@ -1,4 +1,4 @@
-const { Stock, User, Material } = require("../models");
+const { Stock, User, Material, MaterialRequest } = require("../models");
 
 class MaterialController {
   static async createMaterial(req, res) {
@@ -136,6 +136,10 @@ class MaterialController {
         return res.status(401).json({ message: "You are not authorized" });
       }
 
+      await MaterialRequest.destroy({
+        where: { materialId: id },
+      });
+
       await Stock.destroy({
         where: { materialId: id },
       });
@@ -145,6 +149,7 @@ class MaterialController {
 
       res.status(200).json({ message: "Material deleted successfully" });
     } catch (error) {
+      console.log(error, '<<')
       res.status(500).json({ message: "Internal server error" });
     }
   }
