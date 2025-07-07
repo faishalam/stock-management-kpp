@@ -13,6 +13,7 @@ import {
   TRequestMaterialCol,
   TRequestMaterialList,
 } from "../request-material/types";
+import moment from "moment";
 
 const useRequestMaterialCompletedHooks = () => {
   const [modeAdd, setModeAdd] = useState<string>("add");
@@ -148,6 +149,15 @@ const useRequestMaterialCompletedHooks = () => {
         ),
       },
       {
+        field: "updatedAt",
+        headerName: "Approved At",
+        width: 200,
+        valueFormatter: (params: ValueGetterParams<TRequestMaterialList>) => {
+          if (!params.data?.createdAt) return "";
+          return moment(params.data?.createdAt).format("DD/MM/YYYY");
+        },
+      },
+      {
         field: "areaKerja",
         headerName: "User Area Kerja",
         width: 150,
@@ -235,31 +245,31 @@ const useRequestMaterialCompletedHooks = () => {
     { value: "All", label: "All" },
   ];
 
-   const onDownloadData = (dataRequestMaterial: TRequestMaterialList[]) => {
-      try {
-        const d = dataRequestMaterial?.map((material: TRequestMaterialList) => {
-          return {
-            "No. Material": material.Material.materialNumber,
-            "Material Name": material.Material.materialName,
-            "Request Stock" : material.quantity,
-            "Satuan" : material.Material.satuan,
-            "Request By" : material.User.username,
-            "User Area Kerja" : material.User.areaKerja,
-            "Status" : material.status
-          };
-        });
-        const ws = XLSX.utils.json_to_sheet(d);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Data");
-        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        const data = new Blob([excelBuffer], {
-          type: "application/octet-stream",
-        });
-        saveAs(data, `completed-material.xlsx`);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const onDownloadData = (dataRequestMaterial: TRequestMaterialList[]) => {
+    try {
+      const d = dataRequestMaterial?.map((material: TRequestMaterialList) => {
+        return {
+          "No. Material": material.Material.materialNumber,
+          "Material Name": material.Material.materialName,
+          "Request Stock": material.quantity,
+          Satuan: material.Material.satuan,
+          "Request By": material.User.username,
+          "User Area Kerja": material.User.areaKerja,
+          Status: material.status,
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(d);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      saveAs(data, `completed-material.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     openModalQuantity,
     onDownloadData,

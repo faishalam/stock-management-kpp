@@ -444,6 +444,26 @@ const useMaterialListHooks = () => {
       value: "kg",
       label: "Kg",
     },
+    {
+      value: "botol",
+      label: "Botol",
+    },
+    {
+      value: "dus",
+      label: "Dus",
+    },
+    {
+      value: "ekor",
+      label: "Ekor",
+    },
+     {
+      value: "kaleng",
+      label: "Kaleng",
+    },
+     {
+      value: "pack",
+      label: "Pack",
+    },
   ];
 
   const statisticsDataTop = useMemo(

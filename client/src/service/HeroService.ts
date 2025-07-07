@@ -1,6 +1,7 @@
 import Axios from "axios";
 
-const baseURL = "https://stock-management.cloud/";
+// const baseURL = "https://stock-management.cloud/";
+const baseURL = "http://localhost:3000/";
 
 export const HeroServices = Axios.create({
   baseURL: baseURL,
