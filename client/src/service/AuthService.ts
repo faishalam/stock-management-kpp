@@ -1,7 +1,6 @@
 import Axios from "axios";
 
-// const baseURL = "https://stock-management.cloud/";
-const baseURL = "http://localhost:3000/";
+const baseURL = "https://stock-management.cloud/";
 
 export const AuthServices = Axios.create({
   baseURL: baseURL,
