@@ -370,7 +370,7 @@ const useRequestMaterialHooks = () => {
       {
         field: "hargaSatuan",
         headerName: "Harga per Satuan",
-        hide: dataUser?.role === "user",
+        hide: dataUser?.role === "user" || dataUser?.role === "admin",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value
@@ -380,7 +380,7 @@ const useRequestMaterialHooks = () => {
       {
         field: "hargaTotal",
         headerName: "Total Harga",
-        hide: dataUser?.role === "user",
+        hide: dataUser?.role === "user" || dataUser?.role === "admin",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value
@@ -603,7 +603,7 @@ const useRequestMaterialHooks = () => {
           "Total Harga": material.hargaTotal,
           "Submitted By": material.User.username,
           "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
-          "Status" : material.status
+          Status: material.status,
         };
       });
       const ws = XLSX.utils.json_to_sheet(d);
@@ -654,7 +654,7 @@ const useRequestMaterialHooks = () => {
     onInvalidSubmitRevise,
     getValues,
     setValue,
-    onDownloadData
+    onDownloadData,
   };
 };
 
