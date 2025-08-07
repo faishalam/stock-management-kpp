@@ -11,11 +11,13 @@ import { TMasterMaterialCol, TMaterialFormInput } from "../types";
 import RenderTransactionStatus from "@/components/atoms/render-transaction-status";
 import useStockByMaterialId from "@/service/stock-material/useStockByMaterialId";
 import { TMasterMaterialStockList } from "@/app/(private)/stock-management/request/types";
+import useAuth from "@/app/hooks";
 
 const useMaterialListDetail = () => {
   const [openModalStock, setOpenModalStock] = useState<boolean>(false);
   const [modeAdd, setModeAdd] = useState<string>("add");
   const { id } = useParams();
+  const { dataUser } = useAuth();
 
   const { control } = useForm<TMaterialFormInput>({
     defaultValues: {
@@ -125,6 +127,7 @@ const useMaterialListDetail = () => {
       {
         field: "hargaSatuan",
         headerName: "Harga per Satuan",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialCol) =>
           params.value
@@ -134,6 +137,7 @@ const useMaterialListDetail = () => {
       {
         field: "hargaTotal",
         headerName: "Total Harga",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialCol) =>
           params.value
@@ -229,19 +233,23 @@ const useMaterialListDetail = () => {
     return isLoadingMaterialListById || isLoadingStockByMaterialId;
   }
 
-  const onDownloadData = (dataStockByMaterialId: TMasterMaterialStockList[]) => {
-     try {
-      const d = dataStockByMaterialId?.map((material: TMasterMaterialStockList) => {
-        return {
-          "Material Name": dataMaterialById.materialName,
-          Quantity: dataMaterialById.quantity,
-          "Harga per Satuan": material.hargaSatuan,
-          "Total Harga": material.hargaTotal,
-          "Submitted By": material.User.username,
-          "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
-          Status: material.status,
-        };
-      });
+  const onDownloadData = (
+    dataStockByMaterialId: TMasterMaterialStockList[]
+  ) => {
+    try {
+      const d = dataStockByMaterialId?.map(
+        (material: TMasterMaterialStockList) => {
+          return {
+            "Material Name": dataMaterialById.materialName,
+            Quantity: dataMaterialById.quantity,
+            "Harga per Satuan": material.hargaSatuan,
+            "Total Harga": material.hargaTotal,
+            "Submitted By": material.User.username,
+            "Submitted Date": moment(material.createdAt).format("DD/MM/YYYY"),
+            Status: material.status,
+          };
+        }
+      );
       const ws = XLSX.utils.json_to_sheet(d);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Data");

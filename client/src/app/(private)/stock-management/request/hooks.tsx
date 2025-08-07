@@ -370,6 +370,7 @@ const useRequestMaterialHooks = () => {
       {
         field: "hargaSatuan",
         headerName: "Harga per Satuan",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value
@@ -379,6 +380,7 @@ const useRequestMaterialHooks = () => {
       {
         field: "hargaTotal",
         headerName: "Total Harga",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value

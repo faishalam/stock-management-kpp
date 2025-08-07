@@ -141,6 +141,7 @@ const useStockMaterialHooks = () => {
       {
         field: "hargaSatuan",
         headerName: "Harga per Satuan",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value
@@ -150,6 +151,7 @@ const useStockMaterialHooks = () => {
       {
         field: "hargaTotal",
         headerName: "Total Harga",
+        hide: dataUser?.role === "user",
         width: 150,
         valueFormatter: (params: TMasterMaterialStockListCol) =>
           params.value

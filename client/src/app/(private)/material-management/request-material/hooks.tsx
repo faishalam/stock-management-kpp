@@ -445,6 +445,9 @@ const useRequestMaterialHooks = () => {
     { value: "TPP", label: "TPP" },
     { value: "Laundry dan HK", label: "Laundry dan HK" },
     { value: "Carpenter", label: "Carpenter" },
+    { value: "SM", label: "SM" },
+    { value: "Kantin", label: "Kantin" },
+    { value: "View Point", label: "View Point" },
     { value: "All", label: "All" },
   ];
 
