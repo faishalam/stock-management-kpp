@@ -265,6 +265,7 @@ const useStockMaterialHooks = () => {
           .toLocaleString("id-ID")}`,
         label: "Total Harga",
         bgColor: "from-[rgba(147,51,234,0.1)]",
+        hide: dataUser?.role === "user",
       },
       {
         count: dataMaterialStock?.reduce(

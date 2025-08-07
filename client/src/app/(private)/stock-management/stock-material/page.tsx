@@ -28,15 +28,24 @@ const StockMaterialPage: React.FC = () => {
         <div className="w-[100%] h-[100%]">
           <ModalStock />
           <div className="w-full flex flex-col gap-4 py-6">
-            <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-5">
-              {statisticsDataTop.map((item, index) => (
-                <StatisticsComponentsBottom
-                  key={index}
-                  label={item.label}
-                  count={item.count}
-                  bgColor={item.bgColor}
-                />
-              ))}
+            <div
+              className={`w-full grid ${
+                statisticsDataTop.filter((item) => !item.hide).length === 2
+                  ? "grid-cols-2"
+                  : "grid-cols-3"
+              } gap-5`}
+            >
+              {statisticsDataTop
+                .filter((item) => !item.hide)
+                .map((item, index) => (
+                  <StatisticsComponentsBottom
+                    key={index}
+                    label={item.label}
+                    count={item.count}
+                    bgColor={item.bgColor}
+                    hide={item?.hide ?? false}
+                  />
+                ))}
             </div>
           </div>
           <div className="w-full bg-white shadow-md rounded-lg">
@@ -108,7 +117,10 @@ const StatisticsComponentsBottom: React.FC<{
   bgColor: string;
   count: string | number;
   label: string;
-}> = ({ count, label }) => {
+  hide: boolean;
+}> = ({ count, label, hide }) => {
+  if (hide) return null;
+
   return (
     <div
       className={`flex flex-col bg-gradient-to-l bg-[#CCE1E0] to-white shadow-md p-4 rounded-lg`}
