@@ -63,16 +63,22 @@ const ModalStock: React.FC = () => {
                   : "-"}
               </p>
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center">
-                <p className="text-sm text-[#9CA3AF]">Total Harga</p>
-              </div>
-              <p className="text-sm text-[#4B5563]">
-                {watched?.hargaTotal
-                  ? `Rp ${Number(watched?.hargaTotal).toLocaleString("id-ID")}`
-                  : "-"}
-              </p>
-            </div>
+            {dataUser.role !== "supervisor_1" ||
+              (dataUser.role !== "supervisor_2" && (
+                <div className="space-y-1">
+                  <div className="flex items-center">
+                    <p className="text-sm text-[#9CA3AF]">Total Harga</p>
+                  </div>
+                  <p className="text-sm text-[#4B5563]">
+                    {watched?.hargaTotal
+                      ? `Rp ${Number(watched?.hargaTotal).toLocaleString(
+                          "id-ID"
+                        )}`
+                      : "-"}
+                  </p>
+                </div>
+              ))}
+
             <div>
               {watched?.reasonRevise && (
                 <div className="text-sm flex flex-col gap-2">
@@ -140,45 +146,51 @@ const ModalStock: React.FC = () => {
                   />
                 )}
               />
-              <Controller
-                name="hargaSatuan"
-                control={control}
-                rules={
-                  dataUser?.role === "supervisor_1" ||
-                  dataUser?.role === "supervisor_2"
-                    ? { required: "Harga is required" }
-                    : { required: false }
-                }
-                render={({ field }) => {
-                  const formatCurrency = (value: string) => {
-                    const numericValue = value.replace(/\D/g, "");
-                    return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                  };
-                  const handleChange = (
-                    e: React.ChangeEvent<HTMLInputElement>
-                  ) => {
-                    const rawValue = e.target.value.replace(/\D/g, "");
-                    field.onChange(rawValue);
-                  };
-                  return (
-                    <CInput
-                      label="Harga Satuan*"
-                      disabled={
-                        !(
-                          modeAdd === "edit" &&
-                          (dataUser?.role === "supervisor_1" ||
-                            dataUser?.role === "supervisor_2")
-                        )
-                      }
-                      className="w-full"
-                      placeholder="Harga hanya dapat diisi oleh supervisor"
-                      autoComplete="off"
-                      value={formatCurrency(field.value || "")}
-                      onChange={handleChange}
-                    />
-                  );
-                }}
-              />
+              {dataUser?.role === "supervisor_1" ||
+                (dataUser.role === "supervisor_2" && (
+                  <Controller
+                    name="hargaSatuan"
+                    control={control}
+                    rules={
+                      dataUser?.role === "supervisor_1" ||
+                      dataUser?.role === "supervisor_2"
+                        ? { required: "Harga is required" }
+                        : { required: false }
+                    }
+                    render={({ field }) => {
+                      const formatCurrency = (value: string) => {
+                        const numericValue = value.replace(/\D/g, "");
+                        return numericValue.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          "."
+                        );
+                      };
+                      const handleChange = (
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        const rawValue = e.target.value.replace(/\D/g, "");
+                        field.onChange(rawValue);
+                      };
+                      return (
+                        <CInput
+                          label="Harga Satuan*"
+                          disabled={
+                            !(
+                              modeAdd === "edit" &&
+                              (dataUser?.role === "supervisor_1" ||
+                                dataUser?.role === "supervisor_2")
+                            )
+                          }
+                          className="w-full"
+                          placeholder="Harga hanya dapat diisi oleh supervisor"
+                          autoComplete="off"
+                          value={formatCurrency(field.value || "")}
+                          onChange={handleChange}
+                        />
+                      );
+                    }}
+                  />
+                ))}
             </div>
 
             {/* Buttons at the bottom */}
