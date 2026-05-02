@@ -54,7 +54,7 @@ const useUserManagementHooks = () => {
     areaKerja: string | null;
   }>({ search: "", role: null, areaKerja: null });
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
-    { page: 1, limit: 10 }
+    { page: 1, limit: 10 },
   );
   const modalWarningInfo = useModalWarningInfo();
   const queryClient = useQueryClient();
@@ -79,7 +79,7 @@ const useUserManagementHooks = () => {
         .toLowerCase()
         .includes(filter.search.toLowerCase());
       const search4 = x.areaKerja
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(filter.search.toLowerCase());
       const search = search1 || search2 || search3 || search4;
 
@@ -228,7 +228,7 @@ const useUserManagementHooks = () => {
                     if (params?.data) {
                       resetRegister(params?.data);
                       router.push(
-                        `/user-management/${params?.data.id}?mode=view`
+                        `/user-management/${params?.data.id}?mode=view`,
                       );
                     }
                   }}
@@ -242,7 +242,7 @@ const useUserManagementHooks = () => {
                     if (params?.data) {
                       resetRegister(params?.data);
                       router.push(
-                        `/user-management/${params?.data.id}?mode=edit`
+                        `/user-management/${params?.data.id}?mode=edit`,
                       );
                     }
                   }}
@@ -310,7 +310,7 @@ const useUserManagementHooks = () => {
         bgColor: "from-[rgba(22,163,74,0.1)]",
       },
     ],
-    [dataUserList]
+    [dataUserList],
   );
 
   const rolesOptions = [
@@ -425,7 +425,7 @@ export const useUserManagement = () => {
   const context = useContext(UserManagementContext);
   if (context === undefined) {
     throw new Error(
-      "useUserManagementHooks must be used within an UserManagementProvider"
+      "useUserManagementHooks must be used within an UserManagementProvider",
     );
   }
   return context;
